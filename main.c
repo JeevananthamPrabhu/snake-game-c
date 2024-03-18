@@ -2,20 +2,12 @@
 #include<stdlib.h>     
 #include<conio.h>
 #include<time.h>
-int u,l,score=0;
-int x=1,y=1;
+int targetrow,targetcolumn,score=0;
+int snakerow=1,snakecolumn=1;
 void rando()
 {
-  u=time(0)%10+1;  
-    if(u%2!=0)
-    l=time(0)%10;
-    else
-    l=time(0)%10+2;
-    
-    if(u==0)
-    u++;
-    if(l==0)
-    l++;
+  targetrow=time(0)%10+1;  //to avoid 0
+  targetcolumn=time(0)%10+2; // to avoid 0 and same value
 }
 void end()
 {
@@ -26,79 +18,67 @@ void end()
 int main()  
 {  
     int i,j;  
-    char m[3],k;
-   rando();
-//  printf("%d %d\n",u,l);
+    char key;
+    rando();
 while(1)
 {
     system("clear");
     printf("---------SNAKE GAME---------\n----------------------------\n");
     printf("Key rules:\n");
     printf("\tDown : s \tUP    : w \n\tLEFT : a \tRIGHT : d\nEXIT : x\n\n");
-    if(u!=x||l!=y){
-    for(i=0;i<14;i++)
-    {
-        for(j=0;j<14;j++)
+    printf("%d %d\n",targetrow,targetcolumn);
+    if(targetrow!=snakerow||targetcolumn!=snakecolumn){
+        for(i=0;i<14;i++)
         {
-            
-            if(i==0||j==0||i==13||j==13)
+            for(j=0;j<14;j++)
             {
-                printf("* ");
                 
+                if(i==0||j==0||i==13||j==13)
+                {
+                    printf("* ");
+                }
+                else
+                {
+                        if(i==snakerow&&j==snakecolumn)
+                        printf("O ");
+                        else if(i==targetrow && j==targetcolumn)
+                        printf("& ");
+                        else
+                        printf("  ");
+                }
                 
             }
-            else
-            {
-                    if(i==x&&j==y)
-                    printf("O ");
-                    else if(i==u && j==l)
-                    printf("& ");
-                    else
-                    printf("  ");
-            }
-            
+            printf("\n");
         }
+        printf("\nyour score : %d ",score);
+        printf("\nEnter key  : ");
+        scanf("%c",&key);
         printf("\n");
-    }
-    printf("\nyour score : %d ",score);
-    printf("\nEnter key  : ");
-    scanf("%s",m);
-    k=m[0];
-    printf("\n");
-    if(k=='w')
-    x--;
-    else if (k=='s')
-    x++;
-    else if (k=='a')
-    y--;
-    else if (k=='d')
-    y++;
-    else if (k=='x')
-    {
+        if(key=='w')
+        snakerow--;
+        else if (key=='s')
+        snakerow++;
+        else if (key=='a')
+        snakecolumn--;
+        else if (key=='d')
+        snakecolumn++;
+        else if (key=='x')
+        {
+            end();
+            exit(0);
+        }
+       if(snakerow>12||snakecolumn>12||snakerow<1||snakecolumn<1)
+       {
         end();
-    exit(0);
-    }
-    
-   if(x>12||y>12||x<1||y<1)
-   {
-    end();
-   exit(0);
-   }
+        exit(0);
+       }
     }
     else
     {
-        
         score++;
-        
-    rando();
+        rando();
     }
 }
     
     return 0;
 }
-
-
-
-
-
-
